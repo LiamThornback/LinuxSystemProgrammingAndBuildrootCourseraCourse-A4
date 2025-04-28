@@ -6,11 +6,11 @@
 ##############################################################
 
 #TODO: Fill up the contents below in order to reference your assignment 3 git contents
-AESD_ASSIGNMENTS_VERSION = '#COMMIT VERSION NUMBER'
+AESD_ASSIGNMENTS_VERSION = '25d7c11dba0160a81ecfbf3c44d333f31703d786'
 # Note: Be sure to reference the *ssh* repository URL here (not https) to work properly
 # with ssh keys and the automated build/test system.
 # Your site should start with git@github.com:
-AESD_ASSIGNMENTS_SITE = '#GITHUB REPOSITORY LINK'
+AESD_ASSIGNMENTS_SITE = 'git@github.com/LiamThornback/LinuxSystemProgrammingAndBuildrootCourseraCourse-A3'
 AESD_ASSIGNMENTS_SITE_METHOD = git
 AESD_ASSIGNMENTS_GIT_SUBMODULES = YES
 
@@ -20,9 +20,23 @@ endef
 
 # TODO add your writer, finder and finder-test utilities/scripts to the installation steps below
 define AESD_ASSIGNMENTS_INSTALL_TARGET_CMDS
+	# create the configuration directory on the target
 	$(INSTALL) -d 0755 $(@D)/conf/ $(TARGET_DIR)/etc/finder-app/conf/
+
+	# install configuration files with correct permissions
 	$(INSTALL) -m 0755 $(@D)/conf/* $(TARGET_DIR)/etc/finder-app/conf/
+
+	# install test scripts in /bin
 	$(INSTALL) -m 0755 $(@D)/assignment-autotest/test/assignment4/* $(TARGET_DIR)/bin
+
+	# install the writer executable in /bin
+	$(INSTALL) -m 0755 $(@D)/finder-app/writer $(TARGET_DIR)/bin
+
+	# install the finder script in /bin
+	$(INSTALL) -m 0755 $(@D)/finder-app/finder.sh $(TARGET_DIR)/bin
+
+	# install the finder test script in /bin
+	$(INSTALL) -m 0755 $(@D)/finder-app/finder-test.sh $(TARGET_DIR)/bin
 endef
 
 $(eval $(generic-package))
