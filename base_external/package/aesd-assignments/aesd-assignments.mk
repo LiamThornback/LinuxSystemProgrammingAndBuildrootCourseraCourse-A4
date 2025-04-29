@@ -6,11 +6,11 @@
 ##############################################################
 
 #TODO: Fill up the contents below in order to reference your assignment 3 git contents
-AESD_ASSIGNMENTS_VERSION = '25d7c11dba0160a81ecfbf3c44d333f31703d786'
+AESD_ASSIGNMENTS_VERSION = '9b6867e5d59ccc1378b0b0d946581219043eaa00'
 # Note: Be sure to reference the *ssh* repository URL here (not https) to work properly
 # with ssh keys and the automated build/test system.
 # Your site should start with git@github.com:
-AESD_ASSIGNMENTS_SITE = 'git@github.com/LiamThornback/LinuxSystemProgrammingAndBuildrootCourseraCourse-A3'
+AESD_ASSIGNMENTS_SITE = 'git@github.com:LiamThornback/LinuxSystemProgrammingAndBuildrootCourseraCourse-A3.git'
 AESD_ASSIGNMENTS_SITE_METHOD = git
 AESD_ASSIGNMENTS_GIT_SUBMODULES = YES
 
@@ -38,5 +38,26 @@ define AESD_ASSIGNMENTS_INSTALL_TARGET_CMDS
 	# install the finder test script in /bin
 	$(INSTALL) -m 0755 $(@D)/finder-app/finder-test.sh $(TARGET_DIR)/bin
 endef
+
+# ---- START DEBUG BLOCK ----
+define AESD_ASSIGNMENTS_CHECK_SSH_ENV
+    @echo "============================================="
+    @echo " SSH Environment Check Inside Buildroot Make "
+    @echo "============================================="
+    @echo "User: $$(shell whoami)"
+    @echo "Home: $${HOME}"
+    @echo "SSH_AUTH_SOCK: $${SSH_AUTH_SOCK}"
+    @echo "--- ssh-add -l ---"
+    @ssh-add -l || echo "ssh-add command failed or no keys found"
+    @echo "--- ls -la ~/.ssh ---"
+    @ls -la $${HOME}/.ssh || echo "Could not list ~/.ssh"
+    @echo "--- ssh -Tvvv git@github.com ---"
+    @ssh -Tvvv git@github.com || echo "SSH test connection failed"
+    @echo "============================================="
+    @echo " End SSH Environment Check                   "
+    @echo "============================================="
+endef
+AESD_ASSIGNMENTS_PRE_DOWNLOAD_HOOKS += AESD_ASSIGNMENTS_CHECK_SSH_ENV
+# ---- END DEBUG BLOCK ----
 
 $(eval $(generic-package))
