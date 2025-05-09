@@ -12,12 +12,18 @@ jobs:
         timeout-minutes: 120
         steps:
           - uses: actions/checkout@v2
-          - name: Refresh github.com host keys           # <‑‑ NEW
+          - name: Refresh github.com host keys   # uses only ssh‑built‑ins
             run: |
-              ssh-keygen -R github.com || true           # remove any stale key
-              curl -s https://api.github.com/meta \
-                | jq -r '.ssh_host_keys[].key' >> ~/.ssh/known_hosts
+              # make sure the directory exists
+              mkdir -p ~/.ssh
 
+              # remove any stale entry – ignore the
+              # “Cannot stat …/known_hosts” warning if the file is absent
+              ssh-keygen -R github.com || true
+
+              # fetch current keys (RSA, ECDSA, ED25519) straight from GitHub
+              # ssh-keyscan is part of openssh‑client and **is** in the container
+              ssh-keyscan -t rsa,ecdsa,ed25519 github.com >> ~/.ssh/known_hosts
           - name: Checkout submodules
             run: git submodule update --init --recursive
           - uses: webfactory/ssh-agent@v0.5.3
