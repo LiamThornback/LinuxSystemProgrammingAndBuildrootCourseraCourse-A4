@@ -12,14 +12,15 @@ jobs:
         timeout-minutes: 120
         steps:
           - uses: actions/checkout@v2
-          - name: Wipe and repopulate host keys for root
+          - name: Prepare host‑keys
             run: |
-              install -d -m700 /root/.ssh
-              # drop every previous github.com key
-              ssh-keygen -q -R github.com -f /root/.ssh/known_hosts || true
-              # re‑add only the current allowed keytypes
-              ssh-keyscan -T10 -t rsa,ecdsa,ed25519 github.com >> /root/.ssh/known_hosts
-
+              sudo apt-get update && sudo apt-get -y install curl jq
+              mkdir -p ~/.ssh /root/.ssh
+              ssh-keygen -R github.com -f ~/.ssh/known_hosts || true
+              ssh-keyscan -t rsa,ecdsa,ed25519 github.com >> ~/.ssh/known_hosts
+              ssh-keygen -R github.com -f /root/.ssh/known_hosts || true
+              ssh-keyscan -t rsa,ecdsa,ed25519 github.com >> /root/.ssh/known_hosts
+            shell: bash
           - name: Checkout submodules
             run: git submodule update --init --recursive
           - uses: webfactory/ssh-agent@v0.5.3
