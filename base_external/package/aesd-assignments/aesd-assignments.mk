@@ -10,8 +10,9 @@ AESD_ASSIGNMENTS_VERSION = 694bb2fad02286af36c9ed2a765c85bc4c568880
 # Note: Be sure to reference the *ssh* repository URL here (not https) to work properly
 # with ssh keys and the automated build/test system.
 # Your site should start with git@github.com:
-AESD_ASSIGNMENTS_SITE = 'git@github.com:LiamThornback/LinuxSystemProgrammingAndBuildrootCourseraCourse-A3.git'
-AESD_ASSIGNMENTS_SITE_METHOD = git
+#AESD_ASSIGNMENTS_SITE = 'git@github.com:LiamThornback/LinuxSystemProgrammingAndBuildrootCourseraCourse-A3.git'
+AESD_ASSIGNMENTS_SITE = 'https://github.com/LiamThornback/LinuxSystemProgrammingAndBuildrootCourseraCourse-A3.git'
+AESD_ASSIGNMENTS_SITE_METHOD = https
 AESD_ASSIGNMENTS_GIT_SUBMODULES = YES
 
 # define AESD_ASSIGNMENTS_BUILD_CMDS
